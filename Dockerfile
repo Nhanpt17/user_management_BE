@@ -1,5 +1,5 @@
 # Use official PHP image
-FROM php:8.1-fpm
+FROM php:8.1
 
 # Set working directory
 WORKDIR /var/www
@@ -24,7 +24,8 @@ RUN composer install --no-dev --optimize-autoloader
 # Set permissions
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
-# Expose port
-EXPOSE 9000
+# Expose HTTP port
+EXPOSE 10000
 
-CMD ["php-fpm"]
+# Start Laravel server
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=10000"]
