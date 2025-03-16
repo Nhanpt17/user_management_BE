@@ -18,12 +18,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
+Route::put('/upload/{id}', [UserController::class, 'upload']);
+
 
 Route::middleware(['auth:api'])->get('/profile',[UserController::class,'showProfile']);
 
 
 Route::middleware(['auth:api','is_user_owner'])->group(function(){
-    Route::put('/user/users/{id}',[UserController::class,'update']);
+    Route::post('/user/users/{id}',[UserController::class,'update']);
 });
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -34,7 +36,7 @@ Route::middleware(['auth:api','admin'])->group(function(){
     Route::get('/users',[UserController::class,'index']);
     Route::post('/users',[UserController::class,'store']);
     Route::get('/users/{id}',[UserController::class,'show']);
-    Route::put('/users/{id}',[UserController::class,'update']);
+    Route::post('/users/{id}',[UserController::class,'update']);
     Route::delete('/users/{id}',[UserController::class,'destroy']);
  
 });
