@@ -8,6 +8,9 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Exception;
+use Illuminate\Support\Facades\Log;
+
 
 
 class UserController extends Controller
@@ -86,6 +89,10 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::findOrFail($id);
+        if($user->avatar){
+            Log::info("Link ảnh: " . url('/storage/' . $user->avatar));
+        }
+
         return response()->json([
             'id' => $user->id,
             'name' => $user->name,
@@ -109,7 +116,9 @@ class UserController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
+    {   
+
+        try{
         $user = User::findOrFail($id);
 
         $request->validate([
@@ -146,6 +155,9 @@ class UserController extends Controller
             'file_path' => asset('storage/' . $user->avatar), // Trả về URL đầy đủ
         ]);
         // return response()->json(['message' => 'User updated successfully']);
+    }catch(Exception $e){
+        echo"lỗi: " . $e->getMessage();
+    }
     }
 
 
