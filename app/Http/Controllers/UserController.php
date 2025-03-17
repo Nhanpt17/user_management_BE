@@ -31,7 +31,8 @@ class UserController extends Controller
                 'phonenumber' => $user->phonenumber,
                 'sex' => $user->sex,
                 'birthday' => $user->birthday,
-                'avatar' => $user->avatar ? url('/storage/' . $user->avatar) : null
+                'avatar' => $user->avatar ? $user->avatar : null
+                //'avatar' => $user->avatar ? url('/storage/' . $user->avatar) : null
             ];
         }));
     }
@@ -56,6 +57,7 @@ class UserController extends Controller
             // Xử lý ảnh đại diện
             $avatar = null;
             if ($request->hasFile('avatar')) {
+
                 $avatarPath = $request->file('avatar')->store('avatars', 'public');
                 $avatar = $avatarPath;
             }
@@ -89,9 +91,7 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::findOrFail($id);
-        if($user->avatar){
-            Log::info("Link ảnh: " . url('/storage/' . $user->avatar));
-        }
+        
 
         return response()->json([
             'id' => $user->id,
@@ -104,14 +104,16 @@ class UserController extends Controller
             'sex' => $user->sex,
             'birthday' => $user->birthday,
             'created_at'=> $user->created_at,
-            'avatar' => $user->avatar ? url('/storage/' . $user->avatar) : null
+            'avatar' => $user->avatar ? $user->avatar : null
+            //'avatar' => $user->avatar ? url('/storage/' . $user->avatar) : null
         ]);
     }
 
     public function showProfile()
     {
         $user = auth()->user();
-        $user->avatar = $user->avatar ? url('/storage/' . $user->avatar) : null;
+        //$user->avatar = $user->avatar ? url('/storage/' . $user->avatar) : null;
+        $user->avatar = $user->avatar ? $user->avatar : null;
         return response()->json($user);
     }
 

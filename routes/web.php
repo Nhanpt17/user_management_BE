@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Log;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +17,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/api/avatar/avatars/{filename}', function ($filename) {
+        
+    $path = storage_path("app/public/avatars/{$filename}");
+
+    if (!file_exists($path)) {
+        abort(404);
+    }
+
+    return Response::file($path);
 });
