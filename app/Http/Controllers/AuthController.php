@@ -37,14 +37,14 @@ class AuthController extends Controller
                 'address' => $request->address,
                 'phonenumber' => $request->phonenumber,
                 'sex' => $request->sex,
-                'birthday' => $request->filled('birthday') ? $request->birthday : null,      
+                'birthday' => $request->filled('birthday') ? $request->birthday : null,
             ]);
 
             return response()->json(['message' => 'User created successfully'], 201);
         } catch (ValidationException $e) {
             return response()->json([
                 'message' => 'Validation failed',
-                 
+
             ], 422);
         }catch(Exception $e){
             return response()->json([
@@ -63,10 +63,10 @@ class AuthController extends Controller
         }
 
         $user = auth()->user();
-        
+
 
         return response()->json(['token' => $token, 'user'=>[
-            
+
             'name'=>$user->name,
             'role'=>$user->role,
             'avatar'=>$user->avatar ? url('/storage/' . $user->avatar) : null
